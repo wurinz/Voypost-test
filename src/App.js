@@ -52,19 +52,52 @@ function App() {
   const [ todoList, setTodoList ] = useState([]);
   const [ inProgressList, setinProgressList] = useState([]);
 
+  const [ list, setList] = useState([]);
+
+  console.log(list)
+
+
+
+
+
+  // for(let item in todoList.items){
+  //   todoListArray.push(todoList.items[item])
+  // }
+  // for(let item in inProgressList.items){
+  //   inProgressListArray.push(inProgressList.items[item])
+  // }
+
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       const db = firebase.firestore();
       const data = await db.collection("groups").get();
-      const todo = data.docs[0].data();
-      const inProgress = data.docs[1].data();
 
+      const listTodo = data.docs[0].data();
+      const listInProgress = data.docs[1].data();
 
-      setTodoList(todo);
-      setinProgressList(inProgress);
+      console.log(listTodo);
+      console.log(listInProgress);
+
+      const list = [listTodo, listInProgress];
+
+      // console.log(list);
+
+      // const todo = data.docs[1].data();
+      // const inProgress = data.docs[2].data();
+      // console.log(todo);
+      // console.log(inProgress)
+
+      setList(list)
     }
     fetchData();
   }, []);
+
+
+
+
 
   let dragAndDropComparison = {
     droppable: 'items',
@@ -171,6 +204,7 @@ function App() {
             )}
           </Droppable>
         </DragDropContext>
+
         {/* <ShowList list={todoList}/>
         <ShowList list={inProgressList} /> */}
       </div>

@@ -13,7 +13,6 @@ const ShowList = ({
     })
 
     return(
-
         <div className="list">
             <h2 className="list_title">{list.name}</h2>
             {renderList}
