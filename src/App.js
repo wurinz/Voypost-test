@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebaseConfig';
 import ShowList from './components/showList';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+
+
+
 
 
 const reorder = (list, startIntdex, endIndex) => {
@@ -61,12 +65,114 @@ function App() {
     }
     fetchData();
   }, []);
+
+  let dragAndDropComparison = {
+    droppable: 'items',
+    droppable2: 'selected'
+  }
+
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+
+    if(!destination){
+      return;
+    }
+
+    if(source.droppableId === destination.droppableId){
+      const items = reorder(
+        todoList,
+        //id?
+        source.index,
+        destination.index
+      );
+
+      let state = { items };
+
+      if(source.droppableId === 'droppable2') {
+        state = { selected: items }
+      }
+
+      setTodoList(state);
+
+    } else {
+      const result = move({
+          todoList,
+          inProgressList,
+          source, 
+          destination
+      });
+
+      // setTodoList(result.),
+      // setinProgressList(result.droppable2)
+
+    }
+  }
+
+
+
   
   return (
     <div className="App">
       <div className="container">
-        <ShowList list={todoList}/>
-        <ShowList list={inProgressList} />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <div 
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}>
+                  {todoList.map((item, index) => (
+                    <Draggable 
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
+                          {item.name}
+                        </div>
+                      </Draggable>
+                  ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <Droppable droppableId="droppable2">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}       
+                style={getListStyle(snapshot.isDraggingOver)}>
+                  {inProgressList.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}>
+                              {item.name}
+                          </div>
+                        )}
+                      </Draggable>
+                  ))}
+                  {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        {/* <ShowList list={todoList}/>
+        <ShowList list={inProgressList} /> */}
       </div>
     </div>
   );
