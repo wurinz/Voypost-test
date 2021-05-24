@@ -3,8 +3,6 @@ import React from 'react';
 const ShowList = ({
     list
 }) => {
-    console.log(list.items);
-
     let listArray = [];
     for(let item in list.items){
         listArray.push(list.items[item]);
