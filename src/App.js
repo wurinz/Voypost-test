@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useEffect, useState } from 'react';
+import firebase from './firebaseConfig';
+import ShowList from './components/showList';
 function App() {
+
+  const [ todoList, setTodoList ] = useState([]);
+  const [ inProgressList, setinProgressList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = firebase.firestore();
+      const data = await db.collection("groups").get();
+      const todo = data.docs[0].data();
+      const inProgress = data.docs[1].data();
+
+
+      setTodoList(todo);
+      setinProgressList(inProgress);
+    }
+    fetchData();
+  }, [])
+
+  // console.log(todoList);
+  // console.log(inProgressList);
+
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container">
+        <ShowList list={todoList}/>
+        <ShowList list={inProgressList} />
+      </div>
     </div>
   );
 }
