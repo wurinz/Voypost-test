@@ -7,50 +7,47 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 
 
-// const reorder = (list, startIntdex, endIndex) => {
-//   const result = Array.from(list);
-//   const [removed] = result.splice(startIntdex, 1);
-//   result.splice(endIndex, 0, removed);
+const reorder = (list, startIntdex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIntdex, 1);
+  result.splice(endIndex, 0, removed);
 
-//   return result;
-// }
+  return result;
+}
 
-// const move = (source, destination, droppableSource, droppableDestination) => {
-//   const sourceClone = Array.from(source);
-//   const destinationClone = Array.from(destination);
-//   const [removed] = sourceClone.splice(droppableSource.index, 1);
+const move = (source, destination, droppableSource, droppableDestination) => {
+  const sourceClone = Array.from(source);
+  const destinationClone = Array.from(destination);
+  const [removed] = sourceClone.splice(droppableSource.index, 1);
 
-//   destinationClone.splice(droppableDestination.index, 0, removed);
+  destinationClone.splice(droppableDestination.index, 0, removed);
 
-//   const result = {};
-//   result[droppableSource.droppableId] = sourceClone;
-//   result[droppableDestination.droppableId] = destinationClone;
+  const result = {};
+  result[droppableSource.droppableId] = sourceClone;
+  result[droppableDestination.droppableId] = destinationClone;
 
-//   return result;
-// }
+  return result;
+}
 
-// const grid = 8;
+const grid = 8;
 
-// const getItemStyle = (isDragging, draggableStyle) => ({
-//   userSelect: 'none',
-//   padding: grid * 2,
-//   margin: `0 0 ${grid}px 0`,
+const getItemStyle = (isDragging, draggableStyle) => ({
+  userSelect: 'none',
+  padding: grid * 2,
+  margin: `0 0 ${grid}px 0`,
 
-//   background: isDragging ? 'lightgreen' : 'grey',
+  background: isDragging ? 'lightgreen' : 'grey',
 
-//   ...draggableStyle
-// })
+  ...draggableStyle
+})
 
-// const getListStyle = (isDraggingOver) => ({
-//   background: isDraggingOver ? 'lightblue' : 'lightgrey',
-//   padding: grid, 
-//   width: 250
-// })
+const getListStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? 'lightblue' : 'lightgrey',
+  padding: grid, 
+  width: 250
+})
 
 function App() {
-
-  // const [ todoList, setTodoList ] = useState([]);
-  // const [ inProgressList, setinProgressList] = useState([]);
 
   const [ list, setList ] = useState([]);
 
@@ -87,47 +84,47 @@ function App() {
 
 
 
-  // let dragAndDropComparison = {
-  //   droppable: 'items',
-  //   droppable2: 'selected'
-  // }
+  let dragAndDropComparison = {
+    droppable: 'items',
+    droppable2: 'selected'
+  }
 
-  // const onDragEnd = (result) => {
-  //   const { source, destination } = result;
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
 
-  //   if(!destination){
-  //     return;
-  //   }
+    if(!destination){
+      return;
+    }
 
-  //   if(source.droppableId === destination.droppableId){
-  //     const items = reorder(
-  //       todoList,
-  //       //id?
-  //       source.index,
-  //       destination.index
-  //     );
+    if(source.droppableId === destination.droppableId){
+      const items = reorder(
+        todoList,
+        //id?
+        source.index,
+        destination.index
+      );
 
-  //     let state = { items };
+      let state = { items };
 
-  //     if(source.droppableId === 'droppable2') {
-  //       state = { selected: items }
-  //     }
+      if(source.droppableId === 'droppable2') {
+        state = { selected: items }
+      }
 
-  //     setTodoList(state);
+      setTodoList(state);
 
-  //   } else {
-  //     const result = move({
-  //         todoList,
-  //         inProgressList,
-  //         source, 
-  //         destination
-  //     });
+    } else {
+      const result = move({
+          todoList,
+          inProgressList,
+          source, 
+          destination
+      });
 
-  //     // setTodoList(result.),
-  //     // setinProgressList(result.droppable2)
+      // setTodoList(result.),
+      // setinProgressList(result.droppable2)
 
-  //   }
-  // }
+    }
+  }
 
 
 
@@ -196,8 +193,8 @@ function App() {
 
     <div className="App">
       <div className="container">
-        <ShowList list={todoListArray}/>
-        <ShowList list={inProgressListArray}/>
+        <ShowList list={todoListArray} name={list[0]?.name}/>
+        <ShowList list={inProgressListArray} name={list[0]?.name}/>
       </div>
     </div>
 
