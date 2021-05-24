@@ -7,57 +7,56 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 
 
-const reorder = (list, startIntdex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIntdex, 1);
-  result.splice(endIndex, 0, removed);
+// const reorder = (list, startIntdex, endIndex) => {
+//   const result = Array.from(list);
+//   const [removed] = result.splice(startIntdex, 1);
+//   result.splice(endIndex, 0, removed);
 
-  return result;
-}
+//   return result;
+// }
 
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source);
-  const destinationClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
+// const move = (source, destination, droppableSource, droppableDestination) => {
+//   const sourceClone = Array.from(source);
+//   const destinationClone = Array.from(destination);
+//   const [removed] = sourceClone.splice(droppableSource.index, 1);
 
-  destinationClone.splice(droppableDestination.index, 0, removed);
+//   destinationClone.splice(droppableDestination.index, 0, removed);
 
-  const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destinationClone;
+//   const result = {};
+//   result[droppableSource.droppableId] = sourceClone;
+//   result[droppableDestination.droppableId] = destinationClone;
 
-  return result;
-}
+//   return result;
+// }
 
-const grid = 8;
+// const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
+// const getItemStyle = (isDragging, draggableStyle) => ({
+//   userSelect: 'none',
+//   padding: grid * 2,
+//   margin: `0 0 ${grid}px 0`,
 
-  background: isDragging ? 'lightgreen' : 'grey',
+//   background: isDragging ? 'lightgreen' : 'grey',
 
-  ...draggableStyle
-})
+//   ...draggableStyle
+// })
 
-const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid, 
-  width: 250
-})
+// const getListStyle = (isDraggingOver) => ({
+//   background: isDraggingOver ? 'lightblue' : 'lightgrey',
+//   padding: grid, 
+//   width: 250
+// })
 
 function App() {
 
-  const [ todoList, setTodoList ] = useState([]);
-  const [ inProgressList, setinProgressList] = useState([]);
+  // const [ todoList, setTodoList ] = useState([]);
+  // const [ inProgressList, setinProgressList] = useState([]);
 
   const [ list, setList ] = useState([]);
 
   console.log(list)
 
   useEffect(() => {
-    console.log('aaaa')
     const fetchData = async () => {
       const db = firebase.firestore();
       const data = await db.collection("groups").get();
@@ -73,129 +72,136 @@ function App() {
   let todoListArray = [];
   let inProgressListArray = [];
 
-  for(let item in list[0].items){
-    todoListArray.push(list[0].items[item])
-  }
-  for(let item in list[1].items){
-    inProgressListArray.push(list[1].items[item])
-  }
-
-
-
-
-
-
-  let dragAndDropComparison = {
-    droppable: 'items',
-    droppable2: 'selected'
-  }
-
-  const onDragEnd = (result) => {
-    const { source, destination } = result;
-
-    if(!destination){
-      return;
+  if(list.length !== 0){
+    for(let item in list[0].items){
+      todoListArray.push(list[0].items[item])
     }
-
-    if(source.droppableId === destination.droppableId){
-      const items = reorder(
-        todoList,
-        //id?
-        source.index,
-        destination.index
-      );
-
-      let state = { items };
-
-      if(source.droppableId === 'droppable2') {
-        state = { selected: items }
-      }
-
-      setTodoList(state);
-
-    } else {
-      const result = move({
-          todoList,
-          inProgressList,
-          source, 
-          destination
-      });
-
-      // setTodoList(result.),
-      // setinProgressList(result.droppable2)
-
+    for(let item in list[1].items){
+      inProgressListArray.push(list[1].items[item])
     }
   }
+  
+
+
+
+
+
+
+  // let dragAndDropComparison = {
+  //   droppable: 'items',
+  //   droppable2: 'selected'
+  // }
+
+  // const onDragEnd = (result) => {
+  //   const { source, destination } = result;
+
+  //   if(!destination){
+  //     return;
+  //   }
+
+  //   if(source.droppableId === destination.droppableId){
+  //     const items = reorder(
+  //       todoList,
+  //       //id?
+  //       source.index,
+  //       destination.index
+  //     );
+
+  //     let state = { items };
+
+  //     if(source.droppableId === 'droppable2') {
+  //       state = { selected: items }
+  //     }
+
+  //     setTodoList(state);
+
+  //   } else {
+  //     const result = move({
+  //         todoList,
+  //         inProgressList,
+  //         source, 
+  //         destination
+  //     });
+
+  //     // setTodoList(result.),
+  //     // setinProgressList(result.droppable2)
+
+  //   }
+  // }
 
 
 
   
   return (
-    
-    //     <DragDropContext onDragEnd={onDragEnd}>
-    //       <Droppable droppableId="droppable">
-    //         {(provided, snapshot) => (
-    //           <div 
-    //             ref={provided.innerRef}
-    //             style={getListStyle(snapshot.isDraggingOver)}>
-    //               {todoList.map((item, index) => (
-    //                 <Draggable 
-    //                   key={item.id}
-    //                   draggableId={item.id}
-    //                   index={index}>
-    //                     <div
-    //                       ref={provided.innerRef}
-    //                       {...provided.draggableProps}
-    //                       {...provided.dragHandleProps}
-    //                       style={getItemStyle(
-    //                         snapshot.isDragging,
-    //                         provided.draggableProps.style
-    //                       )}
-    //                     >
-    //                       {item.name}
-    //                     </div>
-    //                   </Draggable>
-    //               ))}
-    //             {provided.placeholder}
-    //           </div>
-    //         )}
-    //       </Droppable>
-    //       <Droppable droppableId="droppable2">
-    //         {(provided, snapshot) => (
-    //           <div
-    //             ref={provided.innerRef}       
-    //             style={getListStyle(snapshot.isDraggingOver)}>
-    //               {inProgressList.map((item, index) => (
-    //                 <Draggable
-    //                   key={item.id}
-    //                   draggableId={item.id}
-    //                   index={index}>
-    //                     {(provided, snapshot) => (
-    //                       <div
-    //                         ref={provided.innerRef}
-    //                         {...provided.draggableProps}
-    //                         {...provided.dragHandleProps}
-    //                         style={getItemStyle(
-    //                           snapshot.isDragging,
-    //                           provided.draggableProps.style
-    //                         )}>
-    //                           {item.name}
-    //                       </div>
-    //                     )}
-    //                   </Draggable>
-    //               ))}
-    //               {provided.placeholder}
-    //           </div>
-    //         )}
-    //       </Droppable>
-    //     </DragDropContext>
+    <div>
+        {/* <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <div 
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}>
+                  {todoList.map((item, index) => (
+                    <Draggable 
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
+                          {item.name}
+                        </div>
+                      </Draggable>
+                  ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <Droppable droppableId="droppable2">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}       
+                style={getListStyle(snapshot.isDraggingOver)}>
+                  {inProgressList.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}>
+                              {item.name}
+                          </div>
+                        )}
+                      </Draggable>
+                  ))}
+                  {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext> */}
+
+
 
     <div className="App">
       <div className="container">
-        <ShowList list={todoListArray} name={list[0].name}/>
-        <ShowList list={inProgressListArray} name={list[1].name} />
+        <ShowList list={todoListArray}/>
+        <ShowList list={inProgressListArray}/>
       </div>
     </div>
+
+  </div>
   );
 }
 
