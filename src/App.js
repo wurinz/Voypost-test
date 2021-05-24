@@ -69,14 +69,16 @@ function App() {
     fetchData();
   }, []);
 
-  // let todoListArray = [];
-  // let inProgressListArray = [];
+  let todoListArray = [];
+  let inProgressListArray = [];
 
-  // console.log(list);
+  for(let item in list[0].items){
+    todoListArray.push(list[0].items[item])
+  }
+  for(let item in list[1].items){
+    inProgressListArray.push(list[1].items[item])
+  }
 
-  // for(let item in list[0].items){
-  //   todoListArray.push(list[0].items[item].name)
-  // }
 
 
 
@@ -188,8 +190,8 @@ function App() {
           </Droppable>
         </DragDropContext>
 
-        {/* <ShowList list={todoList}/>
-        <ShowList list={inProgressList} /> */}
+        <ShowList list={todoListArray} name={list[0].name}/>
+        <ShowList list={inProgressListArray} name={list[1].name} />
       </div>
     </div>
   );
