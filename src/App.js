@@ -52,40 +52,31 @@ function App() {
   const [ todoList, setTodoList ] = useState([]);
   const [ inProgressList, setinProgressList] = useState([]);
 
-  const [ list, setList] = useState([]);
-
+  const [ list, setList ] = useState([]);
   console.log(list)
-
-  // let todoListArray = [];
-  // let inProgressListArray = [];
-
-  // for(let item in list[0].items){
-  //   todoListArray.push(list[0].items[item].name)
-  // }
-
-
- 
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {
       const db = firebase.firestore();
       const data = await db.collection("groups").get();
-
       const listTodo = data.docs[0].data();
       const listInProgress = data.docs[1].data();
 
-      console.log(listTodo);
-      console.log(listInProgress);
-
       const list = [listTodo, listInProgress];
 
-      setList(list)
+      setList(list);
     }
     fetchData();
   }, []);
+
+  // let todoListArray = [];
+  // let inProgressListArray = [];
+
+  // console.log(list);
+
+  // for(let item in list[0].items){
+  //   todoListArray.push(list[0].items[item].name)
+  // }
 
 
 
