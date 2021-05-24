@@ -53,9 +53,11 @@ function App() {
   const [ inProgressList, setinProgressList] = useState([]);
 
   const [ list, setList ] = useState([]);
+
   console.log(list)
 
   useEffect(() => {
+    console.log('aaaa')
     const fetchData = async () => {
       const db = firebase.firestore();
       const data = await db.collection("groups").get();
@@ -63,7 +65,6 @@ function App() {
       const listInProgress = data.docs[1].data();
 
       const list = [listTodo, listInProgress];
-
       setList(list);
     }
     fetchData();
@@ -130,66 +131,67 @@ function App() {
 
   
   return (
+    
+    //     <DragDropContext onDragEnd={onDragEnd}>
+    //       <Droppable droppableId="droppable">
+    //         {(provided, snapshot) => (
+    //           <div 
+    //             ref={provided.innerRef}
+    //             style={getListStyle(snapshot.isDraggingOver)}>
+    //               {todoList.map((item, index) => (
+    //                 <Draggable 
+    //                   key={item.id}
+    //                   draggableId={item.id}
+    //                   index={index}>
+    //                     <div
+    //                       ref={provided.innerRef}
+    //                       {...provided.draggableProps}
+    //                       {...provided.dragHandleProps}
+    //                       style={getItemStyle(
+    //                         snapshot.isDragging,
+    //                         provided.draggableProps.style
+    //                       )}
+    //                     >
+    //                       {item.name}
+    //                     </div>
+    //                   </Draggable>
+    //               ))}
+    //             {provided.placeholder}
+    //           </div>
+    //         )}
+    //       </Droppable>
+    //       <Droppable droppableId="droppable2">
+    //         {(provided, snapshot) => (
+    //           <div
+    //             ref={provided.innerRef}       
+    //             style={getListStyle(snapshot.isDraggingOver)}>
+    //               {inProgressList.map((item, index) => (
+    //                 <Draggable
+    //                   key={item.id}
+    //                   draggableId={item.id}
+    //                   index={index}>
+    //                     {(provided, snapshot) => (
+    //                       <div
+    //                         ref={provided.innerRef}
+    //                         {...provided.draggableProps}
+    //                         {...provided.dragHandleProps}
+    //                         style={getItemStyle(
+    //                           snapshot.isDragging,
+    //                           provided.draggableProps.style
+    //                         )}>
+    //                           {item.name}
+    //                       </div>
+    //                     )}
+    //                   </Draggable>
+    //               ))}
+    //               {provided.placeholder}
+    //           </div>
+    //         )}
+    //       </Droppable>
+    //     </DragDropContext>
+
     <div className="App">
       <div className="container">
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
-              <div 
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}>
-                  {todoList.map((item, index) => (
-                    <Draggable 
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}>
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          {item.name}
-                        </div>
-                      </Draggable>
-                  ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Droppable droppableId="droppable2">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}       
-                style={getListStyle(snapshot.isDraggingOver)}>
-                  {inProgressList.map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}>
-                              {item.name}
-                          </div>
-                        )}
-                      </Draggable>
-                  ))}
-                  {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-
         <ShowList list={todoListArray} name={list[0].name}/>
         <ShowList list={inProgressListArray} name={list[1].name} />
       </div>
