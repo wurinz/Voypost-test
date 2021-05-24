@@ -56,16 +56,15 @@ function App() {
 
   console.log(list)
 
+  // let todoListArray = [];
+  // let inProgressListArray = [];
 
-
-
-
-  // for(let item in todoList.items){
-  //   todoListArray.push(todoList.items[item])
+  // for(let item in list[0].items){
+  //   todoListArray.push(list[0].items[item].name)
   // }
-  // for(let item in inProgressList.items){
-  //   inProgressListArray.push(inProgressList.items[item])
-  // }
+
+
+ 
 
 
 
@@ -82,13 +81,6 @@ function App() {
       console.log(listInProgress);
 
       const list = [listTodo, listInProgress];
-
-      // console.log(list);
-
-      // const todo = data.docs[1].data();
-      // const inProgress = data.docs[2].data();
-      // console.log(todo);
-      // console.log(inProgress)
 
       setList(list)
     }
